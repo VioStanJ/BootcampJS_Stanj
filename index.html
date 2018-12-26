@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Affiche</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="wrapper">
+
+			<div id="tools">
+				<button id="play">Jouer</button>
+				<button id="pause">Pause</button>
+				<br><br>
+				<button id="stop">Stop</button>
+			</div>
+			<div id="cercle">
+				<div id="rond"></div>
+				<div id="splash">
+					<h2 class="center" id="p1">Play My Game</h2>
+					<h1  class="center" id="s1"></h1>
+				</div>
+			</div>
+			<div id="result">
+				<h1>Score</h1>
+				<div id="cadran">
+					<h3 id="score">0</h3>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			var x = 0;
+			var y = 0;
+			var val = 0;
+			
+			var play = document.getElementById('play');
+			var rond = document.getElementById('rond');
+			var score = document.getElementById('score');
+			var stop = document.getElementById('stop');
+			var pause = document.getElementById('pause');
+			var s1 = document.getElementById('s1');
+			var p1 = document.getElementById('p1');
+			var splash = document.getElementById('splash');
+
+			rond.style.display = 'none';
+
+			var inter;
+			var tcach;
+			var taff;
+			var tim;
+
+			function playText(){
+				splash.style.display = 'block';
+				p1.innerHTML = 'Start On ';
+				var i = 2;
+				s1.innerHTML = '1';
+				tim = setInterval(function(){
+					s1.innerHTML = i;
+					i++;
+					if(i == 5){
+						splash.style.display = 'none';
+						clearInterval(tim);
+					}
+				},1000);
+			}
+
+			play.addEventListener('click',function(e){
+				playText();
+				inter = setInterval(function(){
+					affiche();
+				},3000);
+			});
+
+			pause.addEventListener('click',function(e){
+				pauseApp();
+			});
+
+			stop.addEventListener('click',function(e){
+				stopApp();
+			});
+
+			rond.addEventListener('click',function(e){
+				val  += 1;
+				score.innerHTML = val;	
+			});
+
+			function stopApp(){
+				splash.style.display = 'block';
+				p1.innerHTML = 'Game Over !';
+				s1.innerHTML = 'Score : '+val;
+				clearInterval(inter);
+				clearTimeout(tcach);
+				clearTimeout(taff);
+				val = 0;
+				score.innerHTML = val;
+				console.log('Val : '+val);
+				rond.style.display = 'none';
+				clearInterval(tim);
+			}
+
+			function pauseApp(){
+				splash.style.display = 'block';
+				p1.innerHTML = 'Replay The Game !';
+				s1.innerHTML = 'Score : '+val;
+				clearInterval(inter);
+				clearTimeout(tcach);
+				clearTimeout(taff);
+				score.innerHTML = val;
+				cacher();
+			}
+
+			function affiche(){
+				getPosition();
+				tcach = setTimeout(function(){
+					rond.style.display = 'block';
+					rond.style.top = x+'px';
+					rond.style.left = y+'px';					
+				},1000);
+				cacher();
+			}
+
+			function cacher(){
+				taff = setTimeout(function(){
+					rond.style.display = 'none';					
+				},2000);
+			}
+
+			function getPosition(){
+				x = Math.round(Math.random() * (500));
+				y = Math.round(Math.random() * (500));
+				if( x > 460 || y > 460){
+					getPosition();
+				}
+				console.log('X : '+x+"  ==>  Y : "+y)
+			}
+		</script>
+	</body>
+</html>
